@@ -1,18 +1,67 @@
 ---
-description: Well defined goal with regular commitment of time and resources
+description: First exam
 owner:
 type: project
-subType: course
-status: 🟩
+subType: exam
+priority: High, Medium, Low
 tags:
 parent:
-  - MSA
+  - course-math-6331-algebra-i
+due:
+  - Mid March
 ---
+
+```dataviewjs
+linksTable("links")
+
+//==========Library Code=========================
+// linksTable:v2
+function linksTable(field="links"){
+    let links = parseLinks(dv.current()[field])
+    if(links && links.length){
+        dv.span('<h2 style="display:inline">Links: </h2')
+        dv.span(links.map((l, i)=>{
+            if (l.url.startsWith("http://") || l.url.startsWith("https://")){
+                return `<a href="${l.url}" class="exteral-link" rel="noopener">${l.title?l.title:l.url}</a>`
+            } else {
+                return `[[${l.url}]]`
+            }
+        }).join(" | "))
+    }}
+function parseLinks(links){
+    /**
+    let links = parseLinks(dv.current().links)
+    if(links && links.length){
+        dv.table(["Title", "URL"], 
+            links
+            .map(l=>[
+                l.title,
+                l.url
+            ]))
+    }
+    */
+    links = links && links.values && links.values!=0 && links.map(l=>{
+        if(typeof(l) == "string"){
+            return {url: l}
+        } else {
+            let key = Object.keys(l)[0]
+            let value = l[key]
+             if(key == "twitter" && l[key] && !l[key].startsWith("http")){
+                value = `https://twitter.com/${l[key]}`
+            }
+            return {title: key, url: value}
+        }
+    })
+    if (!links) links = []
+    return links.filter(a=>a.url)}
+```
+
 
 
 ## Related
 ```dataviewjs
 relatedTable("project")
+relatedTable("task")
 relatedTable("note")
 relatedTable("source")
 relatedTable("model")
@@ -22,9 +71,9 @@ relatedTable("list")
 // library functions =====================================
 function relatedTable(type="task"){
     let lookup = {
-        "task": {type: "task", relation:"project", header:"Tasks"},
-        "project": {type: "project", relation:"parent", header:"Subprojects"},
-        "note": {type: "note", relation:"project", header:"Notes"},
+        "task": {relation:"project", header:"Tasks"},
+        "project": {relation:"parent", header:"Subprojects"},
+        "note": {relation:"project", header:"Notes"},
         "source": {relation:"source", header:"Sources"},
         "model": {relation:"model", header:"Examples"},
         "topic": {relation:"topic", header:"References"},
@@ -34,11 +83,10 @@ function relatedTable(type="task"){
     let pages = dv.pages('-"!"').where(p=>p[filter.relation] && p[filter.relation].includes(dv.current().file.name))
     if(pages.length){
         header(3, `${filter.header} (${pages.length})`)
-        dv.table(["File", "Due", "Tasks", "Completed", "Tags", "Comment"], 
+        dv.table(["File", "Tasks", "Completed", "Tags", "Comment"], 
             pages
             .map(p => [
                 iLink(p.file.path, properName(p)),
-                p.due,
                 p.file.tasks.filter(t=>t.fullyCompleted==false).length?p.file.tasks.filter(t=>t.fullyCompleted==false).length:"",
                 p.file.tasks.filter(t=>t.fullyCompleted==true).length?p.file.tasks.filter(t=>t.fullyCompleted==true).length:"",
                 p.file.tags,
