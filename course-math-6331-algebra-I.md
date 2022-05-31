@@ -9,6 +9,7 @@ parent:
   - MSA
 ---
 
+![[Pasted image 20220507224908.png]]
 
 ## Related
 ```dataviewjs

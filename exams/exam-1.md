@@ -1,117 +1,192 @@
+
+![[Pasted image 20220309142743.png]]
+## Question 1
+
+A group refers to a set of numbers and an operation on that set of numbers, either addition or multiplication.
+
+The criteria for a set of numbers to be a group on addition or multiplication is:
+
+1. Associativity
+2. Neutral element
+3. Inverse for all values
+
 ---
-description: First exam
-owner:
-type: project
-subType: exam
-priority: High, Medium, Low
-tags:
-parent:
-  - course-math-6331-algebra-i
-due:
-  - Mid March
+
+Let's take addition as our operation:
+
+Associativity for addition means that $a+(b+c)=(a+b)+c$ for $a,b,c\in S$ where $S$ is our set of numbers.
+
+There must be an element $n\in S$ s.t. $a+n=a$ for any element $a\in S$. $n$ is called the neutral element
+
+For all values $a$, there must be a value $b$ s.t. $a+b=n$ where $n$ is the neutral element.
+
 ---
 
-```dataviewjs
-linksTable("links")
+Now for multiplication:
 
-//==========Library Code=========================
-// linksTable:v2
-function linksTable(field="links"){
-    let links = parseLinks(dv.current()[field])
-    if(links && links.length){
-        dv.span('<h2 style="display:inline">Links: </h2')
-        dv.span(links.map((l, i)=>{
-            if (l.url.startsWith("http://") || l.url.startsWith("https://")){
-                return `<a href="${l.url}" class="exteral-link" rel="noopener">${l.title?l.title:l.url}</a>`
-            } else {
-                return `[[${l.url}]]`
-            }
-        }).join(" | "))
-    }}
-function parseLinks(links){
-    /**
-    let links = parseLinks(dv.current().links)
-    if(links && links.length){
-        dv.table(["Title", "URL"], 
-            links
-            .map(l=>[
-                l.title,
-                l.url
-            ]))
-    }
-    */
-    links = links && links.values && links.values!=0 && links.map(l=>{
-        if(typeof(l) == "string"){
-            return {url: l}
-        } else {
-            let key = Object.keys(l)[0]
-            let value = l[key]
-             if(key == "twitter" && l[key] && !l[key].startsWith("http")){
-                value = `https://twitter.com/${l[key]}`
-            }
-            return {title: key, url: value}
-        }
-    })
-    if (!links) links = []
-    return links.filter(a=>a.url)}
-```
+Associativity for addition means that $a(bc)=(ab)c$ for $a,b,c\in S$ where $S$ is our set of numbers.
+
+There must be an element $n\in S$ s.t. $an=a$ for any element $a\in S$. $n$ is called the neutral element
+
+For all values $a$, there must be a value $b$ s.t. $ab=n$ where $n$ is the neutral element.
+
+## Question 2
+
+A commutative ring has 4 requirements
+
+1. Group under addition
+2. Monoid under multiplication
+3. Multiplication is commutative
+4. Distributivity
+
+As we've defined a group under addition in question 1, it remains to explain what a monoid under multiplication is.
+
+A monoid under multiplication has two requirements
+
+1. Associativity
+2. Neutral element
+
+Associativity here means that for any three elements $a,b,c\in S$ where $S$ is our set of numbers, $a(bc)=(ab)c$
+
+Neutral element is the same, where there is an element $a,n\in S$ s.t. $an=a$
+
+For multiplication to be commutative, you check that if you have $a,b\in S$, $ab=ba$
+
+Finally, distributivity simply means that $a(b+c)=ab+ac$ for any $a,b,c\in S$
+
+If all of these criteria are satisfied, then you have a commutative ring
+
+## Question 3
+
+A field is a set $S$ that is a group under both addition and multiplication, with the exception of $0$ for the multiplicative group as $0$ has no inverse.
+
+## Question 4
+
+Let $Y$ and $Z$ be ordered sets.
+
+We say that a map $\gamma$ from $Y$ to $Z$ is order reversing if $\gamma(n)\le\gamma(m)$ and $m\le n$
+
+Define two maps:
+
+$\gamma:Y\rightarrow Z$
+
+$\phi: Z\rightarrow Y$
+
+Say that $\gamma$ and $\phi$ are both order reversing maps.
+
+Then the pair $(\gamma,\phi)$ is a Galois pair if:
+
+$y\le\phi(\gamma(y)),y\in Y$ and $z\le\gamma(\phi(z)),z\in Z$
+
+As an example, I'll be using exercise 1 of the homework:
+
+$X:=\{1,2,3\}$
+
+Subsets $U$ of $X$:
+
+$\{1\},\{2\},\{3\},\{1,2\},\{1,3\},\{2,3\},\{1,2,3\}$
+
+$\gamma(U)$ is the set of all permutations $\pi$ of $X$, where $u^\pi=u$ for every element $u$ in $U$
+
+$\gamma(\emptyset)=X$
+
+$\gamma(\{1,2\},\{2,3\},\{1,3\},\{1,2,3\})=\{id_X\}$
+
+$\gamma(\{1\},\{2\},\{3\})=H,D,K$ (respectively)
+
+It's trivial to see that $\gamma$ is order reversing
+
+$\phi(H)$ is the set of all elements $x\in X$ satisfying $x^\pi=x$ for each element $\pi\in H$
+
+$\phi(\{id_X\})=\{1,2,3\}$
+
+$\phi(H)=\{1\}$
+
+$\phi(D)=\{2\}$
+
+$\phi(K)=\{3\}$
+
+$\phi(N)=\{1,2,3\}$
+
+$\phi(X)=\emptyset$
+
+Again, trivial to see that $\phi$ is order reversing
+
+$(id_X)^{\phi\gamma}=1$
+
+$H^{\phi\gamma}=H$
+
+$K^{\phi\gamma}=K$
+
+$D^{\phi\gamma}=D$
+
+$N^{\phi\gamma}=X$
+
+$X^{\phi\gamma}=X$
+
+$\emptyset^{\gamma\phi}=\emptyset$
+
+$\{1\}^{\gamma\phi}=\{1\}$
+
+$\{2\}^{\gamma\phi}=\{2\}$
+
+$\{3\}^{\gamma\phi}=\{3\}$
+
+$\{1,2\}^{\gamma\phi}=\{1,2,3\}$
+
+$\{2,3\}^{\gamma\phi}=\{1,2,3\}$
+
+$\{1,3\}^{\gamma\phi}=\{1,2,3\}$
+
+$\{1,2,3\}^{\gamma\phi}=\{1,2,3\}$
+
+Then $(\gamma,\phi)$ is a Galois pair
+
+## Question 5
+
+If we have a commutative ring $R$ and a subring $S$, $R$ is integral over $S$ when every element in $R$ is integral on $S$.
+
+For an element $r\in R$ to be integral on $S$, it must satisfy some monic polynomial:
+
+$r^n+s_{n-1}r^{n-1}+...+s_1r+s_0=0$
+
+Where $s_0,s_1,...s_{n-1}\in S$
+
+## Question 6
+
+The multiplicative inverse of $1+i$ is $\frac{1-i}{2}$ as $(1+i)(\frac{1-i}{2})=1$
+
+## Question 7
+
+The complex roots of $x^2+x+1=0$ are $\zeta$ and $\zeta^2$
+
+Where $\zeta=-\frac{1}{2}+\frac{\sqrt{-3}}{2}$
+
+## Question 8
+
+The complex roots of $x^4+2=0$ are $\sqrt[4]{-2},-\sqrt[4]{-2}$
+
+## Question 9
+
+An irreducible element of a commutative ring is an element that satisfies two criteria:
+
+1. It is not 0, and not a unit of the ring
+2. If the element is a product of two other elements in the ring, then at least one of the factors is a unit of the ring
+
+## Question 10
+
+![[Pasted image 20220309151710.png]]
+
+$\mathbb{Q}[\zeta]$ has a dimension of $2$, while $\mathbb{Q}[\sqrt[3]{2}]$ has a dimension of $3$
+
+This is because a basis for $\mathbb{Q}[\zeta]$ is $1+\zeta$, whereas a basis for $\mathbb{Q}[\sqrt[3]{2}]$ is $1+\sqrt[3]{2}+\sqrt[3]{2}^2$
+
+It's stated that the intersection of two subfields of $\mathbb{C}$ is also a subfield of $\mathbb{C}$.
+
+Lemma 4.2 states that $\dim_S(U)=\dim_S(T)\dim_T(U)$ where $S$ and $T$ are subrings of $U$ with $S\subseteq T$
+
+If we look at the basis for $\mathbb{Q}[\zeta]$ and $\mathbb{Q}[\sqrt[3]{2}]$, the only value they have in common is $1$, which is a basis for $\mathbb{Q}$
+
+We can also say that $\mathbb{Q}[\zeta]$ contains no irrational numbers, and so a number of the form $a+b\sqrt[3]{2}+c\sqrt[3]{2}^2$ is only in $\mathbb{Q}[\zeta]$ if $b=c=0$
 
 
-
-## Related
-```dataviewjs
-relatedTable("project")
-relatedTable("task")
-relatedTable("note")
-relatedTable("source")
-relatedTable("model")
-relatedTable("topic")
-relatedTable("list")
-
-// library functions =====================================
-function relatedTable(type="task"){
-    let lookup = {
-        "task": {relation:"project", header:"Tasks"},
-        "project": {relation:"parent", header:"Subprojects"},
-        "note": {relation:"project", header:"Notes"},
-        "source": {relation:"source", header:"Sources"},
-        "model": {relation:"model", header:"Examples"},
-        "topic": {relation:"topic", header:"References"},
-        "list": {relation:"list", header:"Listicals"}
-    }
-    let filter = lookup[type] 
-    let pages = dv.pages('-"!"').where(p=>p[filter.relation] && p[filter.relation].includes(dv.current().file.name))
-    if(pages.length){
-        header(3, `${filter.header} (${pages.length})`)
-        dv.table(["File", "Tasks", "Completed", "Tags", "Comment"], 
-            pages
-            .map(p => [
-                iLink(p.file.path, properName(p)),
-                p.file.tasks.filter(t=>t.fullyCompleted==false).length?p.file.tasks.filter(t=>t.fullyCompleted==false).length:"",
-                p.file.tasks.filter(t=>t.fullyCompleted==true).length?p.file.tasks.filter(t=>t.fullyCompleted==true).length:"",
-                p.file.tags,
-                p.comment
-            ]))
-    }}
-function header(level, title){
-    dv.paragraph(`<div><h${level} data-heading=${title}><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg viewBox="0 0 100 100" class="right-triangle" width="8" height="8"><path fill="currentColor" stroke="currentColor" d="M94.9,20.8c-1.4-2.5-4.1-4.1-7.1-4.1H12.2c-3,0-5.7,1.6-7.1,4.1c-1.3,2.4-1.2,5.2,0.2,7.6L43.1,88c1.5,2.3,4,3.7,6.9,3.7 s5.4-1.4,6.9-3.7l37.8-59.6C96.1,26,96.2,23.2,94.9,20.8L94.9,20.8z"></path></svg></div>${title}</h${level}></div>`)}
-function iLink(href, text=null){
-	if (!href){
-		if (typeof text === 'string' || text instanceof String)
-		{
-			if(text.startsWith("#")){
-				return `${text}`
-			}
-			else{
-				return `[[${text}]]`
-			}
-		} else {
-			return text
-		}
-	}
-	return `<a href="${href}" class="internal-link" rel="noopen">${text}</a>`}
-function iListLink(list){
-	return list && list.map && list.map(e=>iLink(null, e)).join("<br/>")}
-function properName(p){
-	return p.title?p.title:(p.alias?p.alias:p.file.name)}
-```

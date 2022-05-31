@@ -1,117 +1,81 @@
----
-description: Final exam
-owner:
-type: project
-subType: exam
-priority: High, Medium, Low
-tags:
-parent:
-  - course-math-6331-algebra-i
-due:
-  - May
----
+![[Pasted image 20220509083937.png]]
 
-```dataviewjs
-linksTable("links")
+![[Pasted image 20220509102246.png]]
 
-//==========Library Code=========================
-// linksTable:v2
-function linksTable(field="links"){
-    let links = parseLinks(dv.current()[field])
-    if(links && links.length){
-        dv.span('<h2 style="display:inline">Links: </h2')
-        dv.span(links.map((l, i)=>{
-            if (l.url.startsWith("http://") || l.url.startsWith("https://")){
-                return `<a href="${l.url}" class="exteral-link" rel="noopener">${l.title?l.title:l.url}</a>`
-            } else {
-                return `[[${l.url}]]`
-            }
-        }).join(" | "))
-    }}
-function parseLinks(links){
-    /**
-    let links = parseLinks(dv.current().links)
-    if(links && links.length){
-        dv.table(["Title", "URL"], 
-            links
-            .map(l=>[
-                l.title,
-                l.url
-            ]))
-    }
-    */
-    links = links && links.values && links.values!=0 && links.map(l=>{
-        if(typeof(l) == "string"){
-            return {url: l}
-        } else {
-            let key = Object.keys(l)[0]
-            let value = l[key]
-             if(key == "twitter" && l[key] && !l[key].startsWith("http")){
-                value = `https://twitter.com/${l[key]}`
-            }
-            return {title: key, url: value}
-        }
-    })
-    if (!links) links = []
-    return links.filter(a=>a.url)}
-```
+We first define two ordered sets $A$ and $B$, and two order reversing maps $\gamma$ and $\phi$, where $\gamma$ goes from $A$ to $B$ and $\phi$ goes from $B$ to $A$.
 
+The pair $(\gamma,\phi)$ is a Galois pair if $a\le a^{\gamma\phi}$ for each element $a\in A$ and $b\le b^{\phi\gamma}$ for every element $b\in B$.
 
+![[Pasted image 20220509104028.png]]
 
-## Related
-```dataviewjs
-relatedTable("project")
-relatedTable("task")
-relatedTable("note")
-relatedTable("source")
-relatedTable("model")
-relatedTable("topic")
-relatedTable("list")
+An element $a$ in $A$ is called galois with respect to the pair $(\gamma,\phi)$ if $a=a^{\gamma\phi}$. Obviously the same is true for the other set (though you would switch the order of $\gamma$ and $\phi$)
 
-// library functions =====================================
-function relatedTable(type="task"){
-    let lookup = {
-        "task": {relation:"project", header:"Tasks"},
-        "project": {relation:"parent", header:"Subprojects"},
-        "note": {relation:"project", header:"Notes"},
-        "source": {relation:"source", header:"Sources"},
-        "model": {relation:"model", header:"Examples"},
-        "topic": {relation:"topic", header:"References"},
-        "list": {relation:"list", header:"Listicals"}
-    }
-    let filter = lookup[type] 
-    let pages = dv.pages('-"!"').where(p=>p[filter.relation] && p[filter.relation].includes(dv.current().file.name))
-    if(pages.length){
-        header(3, `${filter.header} (${pages.length})`)
-        dv.table(["File", "Tasks", "Completed", "Tags", "Comment"], 
-            pages
-            .map(p => [
-                iLink(p.file.path, properName(p)),
-                p.file.tasks.filter(t=>t.fullyCompleted==false).length?p.file.tasks.filter(t=>t.fullyCompleted==false).length:"",
-                p.file.tasks.filter(t=>t.fullyCompleted==true).length?p.file.tasks.filter(t=>t.fullyCompleted==true).length:"",
-                p.file.tags,
-                p.comment
-            ]))
-    }}
-function header(level, title){
-    dv.paragraph(`<div><h${level} data-heading=${title}><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg viewBox="0 0 100 100" class="right-triangle" width="8" height="8"><path fill="currentColor" stroke="currentColor" d="M94.9,20.8c-1.4-2.5-4.1-4.1-7.1-4.1H12.2c-3,0-5.7,1.6-7.1,4.1c-1.3,2.4-1.2,5.2,0.2,7.6L43.1,88c1.5,2.3,4,3.7,6.9,3.7 s5.4-1.4,6.9-3.7l37.8-59.6C96.1,26,96.2,23.2,94.9,20.8L94.9,20.8z"></path></svg></div>${title}</h${level}></div>`)}
-function iLink(href, text=null){
-	if (!href){
-		if (typeof text === 'string' || text instanceof String)
-		{
-			if(text.startsWith("#")){
-				return `${text}`
-			}
-			else{
-				return `[[${text}]]`
-			}
-		} else {
-			return text
-		}
-	}
-	return `<a href="${href}" class="internal-link" rel="noopen">${text}</a>`}
-function iListLink(list){
-	return list && list.map && list.map(e=>iLink(null, e)).join("<br/>")}
-function properName(p){
-	return p.title?p.title:(p.alias?p.alias:p.file.name)}
-```
+![[Pasted image 20220510094445.png]]
+
+Let $\mathcal{S}$ denote the set of all subfields $S$ of $R$ s.t. $R$ is finitely generated and galois over $S$, and let $\mathcal{G}$ denote the set of all finite subgroups of $Aut(R)$.
+
+We define $\gamma$ to be a bijective order-reversing map from $\mathcal S$ to $\mathcal G$, where $S^\gamma=Aut_S(R)$ for every element $S$ in $\mathcal S$
+
+We also see that the map $\phi$, where $G^\phi=Fix_R(G)$ for every element $G$ in $\mathcal G$, is also a bijective order-reversing map from $\mathcal G$ to $\mathcal S$
+
+Then $\gamma$ and $\phi$ are inverses of each other
+
+We also see that if we have two elements each from $\mathcal S$ and $\mathcal G$, say $T$ and $U$ are elements from $\mathcal S$ and $K$ and $H$ are elements from $\mathcal G$, s.t. $T\subseteq U$ and $T^\gamma=K$ and $U^\gamma=H$.
+
+Then we have that $|\frac{K}{H}|=\dim_T(U)$
+
+![[Pasted image 20220510094451.png]]
+
+The minimal polynomial of $t$ over $S$ is a single polynomial of lowest degree with coefficients from $S$, where $t$ is a root.
+
+$S[X]$ must be a principal ideal domain.
+
+![[Pasted image 20220510094544.png]]
+
+For a field $T$ and a subfield S, if $T$ is finitely generated over $S$ it means that we can take some finite subset $B$ of $T$, where all elements in $T$ can be represented as a combination of elements from $S$ and $B$.
+
+Take $\mathbb{Q}[i]$ and $\mathbb{Q}$ for example, in this case our $B$ would be $\{1,i\}$, it's clear to see that all elements in $\mathbb{Q}[i]$ can be represented as some combination of elements from $\mathbb{Q}$ and $B$
+
+For a field $T$ to be algebraic over the subfield $S$, it means that all elements $t$ in $T$ are algebraic over $S$
+
+For an element $t$ in $T$ to be algebraic over $S$, it means that $S$ contains elements $s_0,...,s_n$ s.t.
+
+$s_nt^n+s_{n-1}t^{n-1}+...+s_1t+s_0=0$
+
+A field $T$ is normal over a subfield $S$ if for every element $t$ in $T$, the minimal polynomial $\min_S(t)$ splits over $T$
+
+A field $T$ is separable over a subfield $S$ if every element of $T$ is separable over $S$, for an element $t$ in $T$ to be separable over $S$, we mean that for a non-constant polynomial, each of its prime divisors over $S$ is multiplicity-free.
+
+For a field $T$ to be galois over $S$, it means that
+
+![[Pasted image 20220510094555.png]]
+
+I think the purpose of the lectures is best summed up in theorem 10.1.
+
+The little paragraph before prefaces that the proof of theorem 10.1 requires our knowledge from Corollary 5.4, Lemma 5.7, Lemma 7.6, Theorem 8.2, Corollary 8.3, and Theorem 9.8.
+
+Theorem 10.1 equates to us a commutative field T being algebraic and galois over a subfield of T called S
+
+It states that T being normal and separable over S is also the same.
+
+And finally, that T is a splitting field over S of a set of separable polynomials over S
+
+From theorem 10.1 (with a little work) follows Corollary 10.2 and 10.3
+
+It feels a little bit like realizing that the derivative and integral are inverses of each other, at least to me. I had a great experience with that realization.
+
+![[Pasted image 20220509104951.png]]
+
+(i) 3
+
+(ii) 4
+
+(iii) Fields have exactly two ideals.
+
+(iv)
+
+(v) Transcendental
+
+(vi) Yes
+
+(vii) Yes
